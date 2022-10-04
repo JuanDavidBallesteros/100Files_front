@@ -23,15 +23,33 @@ function App() {
   const uploadItem = (event) => {
     const fileReader = new FileReader();
     fileReader.readAsDataURL(event.target.files[0]);
+    console.log(event.target.files[0].name)
     fileReader.onload = (e) => {
-      setUpload(e.target.result);
-      console.log(e.target.result);
+      //Separar la data(nombre y tipo de archivo) con los datos de base 64
+      const info = e.target.result.split(";");
+      const datos = {
+        //Nomre del archivo
+        "name": event.target.files[0].name,
+        //Dats en base 64
+        "data": info[1].substring(7),
+      };
+      setUpload(datos);
+      console.log(datos)
     };
 
-    fetch("https://freeimage.host/api/1/upload?key=<YOUR_API_KEY>", {
-      method: "POST",
-      body: upload,
-    })
+  };
+
+  const sendFile = async () => {
+    let config = {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify(upload),
+    }
+    
+    await fetch("http://127.0.0.1:5000/upload-file", config)
       .then((response) => response.json())
       .then((result) => {
         console.log("Success:", result);
@@ -39,7 +57,9 @@ function App() {
       .catch((error) => {
         console.error("Error:", error);
       });
-  };
+  }
+
+
 
   useEffect(() => {}, [list]);
 
@@ -78,6 +98,9 @@ function App() {
                 Refresh
               </Button>
               <UploadButton onUpload={uploadItem} />
+              <Button variant="contained" disableElevation onClick={() => { sendFile() }}>
+                Send
+              </Button>
             </Stack>
           </Box>
         </Grid>
