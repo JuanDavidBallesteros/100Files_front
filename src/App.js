@@ -80,7 +80,7 @@ function App() {
             }}
           >
             <Typography variant={"h1"} sx={{ fontWheigth: "bold" }}>
-              100 Files
+              100 Files Integrated
             </Typography>
             <Typography variant={"h6"}>
               The alternative to save your files in an insecure way
