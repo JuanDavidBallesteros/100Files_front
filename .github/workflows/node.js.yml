@@ -32,7 +32,7 @@ jobs:
     - name: Integration via ssh
       uses: garygrossgarten/github-action-ssh@release
       with:
-        command: ansible-playbook ./automation/main.yml
+        command: ./run_integration.sh
         host: ${{ secrets.HOST }}
         username: adminUser
         passphrase: ${{ secrets.PASSPHRASE }}
