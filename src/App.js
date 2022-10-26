@@ -1,24 +1,15 @@
 import "./App.css";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Box, Grid, Button, Typography, Stack } from "@mui/material";
 import InteractiveList from "./components/List";
 import UploadButton from "./components/Upload";
 
 function App() {
+  
   const [list, setList] = useState([]);
   const [upload, setUpload] = useState({});
-
-  const onRefresh = () => {
-    fetch("https://freeimage.host/api/1/upload?key=<YOUR_API_KEY>")
-      .then((response) => response.json())
-      .then((result) => {
-        console.log("Success:", result);
-        setList([]);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-  };
+  const [host, setHost] = useState("");
+  const [storage, setStorage] = useState("");
 
   const uploadItem = (event) => {
     const fileReader = new FileReader();
@@ -53,15 +44,58 @@ function App() {
       .then((response) => response.json())
       .then((result) => {
         console.log("Success:", result);
+        getHost();
       })
       .catch((error) => {
         console.error("Error:", error);
       });
   }
 
+  // useEffect(()=>{
+  //   getFiles()
+  // },[list]);
 
+  const getStorage = async () => {
+    const files = await fetch ("http://127.0.0.1:5000/get-storage",{
+      method:"GET"
+    });
 
-  useEffect(() => {}, [list]);
+    if (!files.ok) {
+      throw new Error(`Error! status: ${files.status}`);
+    } else {
+      const backResponse = await files.json(); 
+      setStorage(backResponse);
+    }
+  };
+
+  const getHost = async () => {
+    const files = await fetch ("http://127.0.0.1:5000/get-host",{
+      method:"GET"
+    });
+
+    if (!files.ok) {
+      throw new Error(`Error! status: ${files.status}`);
+    } else {
+      const backResponse = await files.json(); 
+      setHost(backResponse);
+    }
+  };
+  
+  const getFiles = async () => {
+   
+    const files = await fetch ("http://127.0.0.1:5000/get-files",{
+      method:"GET"
+    });
+
+    if (!files.ok) {
+      throw new Error(`Error! status: ${files.status}`);
+    } else {
+      const backResponse = await files.json(); 
+      setList(backResponse);
+      getStorage();
+      getHost();
+    }
+  };
 
   return (
     <Box sx={{ height: "100vh", width: "100%", overflow: "hidden" }}>
@@ -94,7 +128,7 @@ function App() {
               }}
             >
               {/* <SearchFiel /> */}
-              <Button variant="contained" disableElevation onClick={onRefresh}>
+              <Button variant="contained" disableElevation onClick={() => {getFiles() }}>
                 Refresh
               </Button>
               <UploadButton onUpload={uploadItem} />
@@ -102,6 +136,12 @@ function App() {
                 Send
               </Button>
             </Stack>
+            <Stack>
+              <Typography variant="h6" > Storage: {storage.size} {storage.measure} </Typography>
+              <Typography variant="h6" > Host: {host.name} </Typography>
+              <Typography variant="h6" > IP Host: {host.ip} </Typography>
+            </Stack>
+            
           </Box>
         </Grid>
         <Grid
@@ -123,11 +163,12 @@ function App() {
               width: "100%",
             }}
           >
-            <Typography variant={"h3"} fontWheigth={"bold"}>
+            <Typography variant={"h3"} sx={{ fontWheigth: "bold" }}>
               Your Files
             </Typography>
             <Box overflow={"auto"} sx={{ width: "100%", height: "80%" }}>
-              <InteractiveList />
+              { list.length !== 0  && <InteractiveList arreglo={list} /> }
+              
             </Box>
           </Box>
         </Grid>

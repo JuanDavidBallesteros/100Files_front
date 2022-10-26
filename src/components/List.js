@@ -3,29 +3,35 @@ import Box from "@mui/material/Box";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
-import ListItemText from "@mui/material/ListItemText";
 import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
 import FolderIcon from "@mui/icons-material/Folder";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-function generate(element) {
-  return [0, 1, 2].map((value) =>
-    React.cloneElement(element, {
-      key: value,
-    })
-  );
-}
 
+// function generate(element,arreglo) {
 
-export default function InteractiveList() {
+//   return arreglo.map((value) =>
 
+//     React.cloneElement(element, {
+//       key: value,
+//     })
+
+//   );
+// }
+
+export default function InteractiveList(props) {
+  const arreglo = props.arreglo
+  console.log(props, "props")
   return (
     <Box sx={{ width:"100%" }}>
       <List dense={false}>
-        {generate(
-          <ListItem
+
+        {
+          arreglo.map((elemento) => (
+            <ListItem
             secondaryAction={
+             
               <IconButton edge="end" aria-label="delete">
                 <DeleteIcon />
               </IconButton>
@@ -36,12 +42,22 @@ export default function InteractiveList() {
                 <FolderIcon />
               </Avatar>
             </ListItemAvatar>
-            <ListItemText
-              primary="Single-line item"
-              secondary={ "Secondary text" }
-            />
+            <ul>
+              <li >
+                {elemento._id}
+              </li>
+              <li>
+                {elemento.name}.{elemento.ext}
+              </li>
+              <li>
+                {elemento.path}
+              </li>
+            </ul>
+            
           </ListItem>
-        )}
+          ))
+        }
+
       </List>
     </Box>
   );
