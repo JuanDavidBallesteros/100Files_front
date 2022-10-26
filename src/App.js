@@ -35,7 +35,8 @@ function App() {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
-        'Content-type': 'application/json'
+        'Content-type': 'application/json',
+        'Access-Control-Allow-Origin':'*'
       },
       body: JSON.stringify(upload),
     }
@@ -57,7 +58,10 @@ function App() {
 
   const getStorage = async () => {
     const files = await fetch ("http://back:5000/get-storage",{
-      method:"GET"
+      method:"GET",
+      headers: {
+        'Access-Control-Allow-Origin':'*'
+      },
     });
 
     if (!files.ok) {
@@ -70,7 +74,10 @@ function App() {
 
   const getHost = async () => {
     const files = await fetch ("http://back:5000/get-host",{
-      method:"GET"
+      method:"GET",
+      headers: {
+        'Access-Control-Allow-Origin':'*'
+      },
     });
 
     if (!files.ok) {
@@ -84,7 +91,10 @@ function App() {
   const getFiles = async () => {
    
     const files = await fetch ("http://back:5000/get-files",{
-      method:"GET"
+      method:"GET",
+      headers: {
+        'Access-Control-Allow-Origin':'*'
+      },
     });
 
     if (!files.ok) {
