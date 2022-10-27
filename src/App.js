@@ -41,7 +41,7 @@ function App() {
       body: JSON.stringify(upload),
     }
     
-    await fetch("http://back:5000/upload-file", config)
+    await fetch("http://20.232.157.238:5000/upload-file", config)
       .then((response) => response.json())
       .then((result) => {
         console.log("Success:", result);
@@ -57,7 +57,7 @@ function App() {
   // },[list]);
 
   const getStorage = async () => {
-    const files = await fetch ("http://back:5000/get-storage",{
+    const files = await fetch ("http://20.232.157.238:5000/get-storage",{
       method:"GET",
       headers: {
         'Access-Control-Allow-Origin':'*'
@@ -73,7 +73,7 @@ function App() {
   };
 
   const getHost = async () => {
-    const files = await fetch ("http://back:5000/get-host",{
+    const files = await fetch ("http://20.232.157.238:5000/get-host",{
       method:"GET",
       headers: {
         'Access-Control-Allow-Origin':'*'
@@ -90,7 +90,7 @@ function App() {
   
   const getFiles = async () => {
    
-    const files = await fetch ("http://back:5000/get-files",{
+    const files = await fetch ("http://20.232.157.238:5000/get-files",{
       method:"GET",
       headers: {
         'Access-Control-Allow-Origin':'*'
